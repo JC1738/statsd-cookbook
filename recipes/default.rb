@@ -16,6 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+nodeName = node.name
+chefEnvironment = node.chef_environment
+
+Chef::Log.info("Node: #{nodeName} is running this environment: #{chefEnvironment}")
+Chef::Log.info("node['statsd']['graphite_host'] = #{node['statsd']['graphite_host']}")
+
 
 include_recipe 'nodejs'
 include_recipe 'git'
@@ -75,7 +81,7 @@ service 'statsd' do
   start_command 'start statsd'
   stop_command 'stop statsd'
   supports restart: true, start: true, stop: true
-  action service_status
+  action :nothing
 end
 
 template "#{node['statsd']['config_dir']}/config.js" do
